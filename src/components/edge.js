@@ -429,21 +429,19 @@ class Edge extends React.Component<IEdgeProps> {
   }
 
   getPathDescription(edge: any) {
-    const src = this.props.sourceNode || {};
-    const trg = this.props.targetNode;
-    const { nodeKey, nodeSize } = this.props;
-    const trgX = trg.x || 0;
-    const trgY = trg.y || 0;
-    const srcX = src.x || 0;
-    const srcY = src.y || 0;
+    const { sourceNode, targetNode, nodeKey, nodeSize } = this.props;
+    const trgX = targetNode && targetNode.x ? targetNode.x : 0;
+    const trgY = targetNode && targetNode.y ? targetNode.y : 0;
+    const srcX = targetNode && sourceNode.x ? sourceNode.x : 0;
+    const srcY = targetNode && sourceNode.y ? sourceNode.y : 0;
 
     // To calculate the offset for a specific node we use that node as the third parameter
     // and the accompanying node as the second parameter, representing where the line
     // comes from and where it's going to. Don't think of a line as a one-way arrow, but rather
     // a connection between two points. In this case, to obtain the offsets for the src we
     // write trg first, then src second. Vice versa to get the offsets for trg.
-    const srcOff = Edge.calculateOffset(nodeSize || 0, trg, src, nodeKey, false);
-    const trgOff = Edge.calculateOffset(nodeSize || 0, src, trg, nodeKey);
+    const srcOff = Edge.calculateOffset(nodeSize || 0, targetNode, sourceNode, nodeKey, false);
+    const trgOff = Edge.calculateOffset(nodeSize || 0, sourceNode, targetNode, nodeKey);
 
     const linePoints = [
       {
